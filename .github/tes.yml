@@ -1,11 +1,10 @@
-name: Test Run
+name: TEST WORKFLOW
 
 on:
   workflow_dispatch:
 
 jobs:
-  check:
+  hello:
     runs-on: ubuntu-latest
     steps:
-      - name: Hello
-        run: echo "Workflow berhasil terbaca"
+      - run: echo "WORKFLOW BERJALAN!"
