@@ -1,34 +1,31 @@
-name: Run Google Search Console Verification
+name: Run Bulk GSC
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:   # jalan manual lewat Actions
 
 jobs:
   run:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repo
+      uses: actions/checkout@v4
 
-    - uses: actions/setup-python@v4
+    - name: Setup Python
+      uses: actions/setup-python@v5
       with:
-        python-version: "3.10"
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
         pip install google-api-python-client google-auth google-auth-oauthlib requests
 
-    - name: Restore client_secret.json
+    # Jika kamu pakai GitHub Secrets, aktifkan ini:
+    - name: Generate client_secret.json
       run: echo "${{ secrets.CLIENT_SECRET_JSON }}" > client_secret.json
 
-    - name: Restore token.json
+    - name: Generate token.json
       run: echo "${{ secrets.TOKEN_JSON }}" > token.json
 
-    - name: Run bulk.py
+    - name: Jalankan bulk.py
       run: python bulk.py
-
-    - name: Upload report
-      uses: actions/upload-artifact@v3
-      with:
-        name: tokens-report
-        path: tokens_report.csv
