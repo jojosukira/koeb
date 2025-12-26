@@ -1,16 +1,20 @@
-name: Run Google Search Console
+name: Run Google Search Console Verification
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:   # bisa dijalankan manual dari Actions tab
+  # push:
+  #   branches: [ main ]  # aktifkan jika ingin auto run tiap push
 
 jobs:
   run:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-    - uses: actions/setup-python@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
       with:
         python-version: "3.10"
 
@@ -18,15 +22,15 @@ jobs:
       run: |
         pip install google-api-python-client google-auth google-auth-oauthlib requests
 
-    - name: Restore credentials files
+    - name: Restore credentials
       run: |
         echo "${{ secrets.CLIENT_SECRET_JSON }}" > client_secret.json
         echo "${{ secrets.TOKEN_JSON }}" > token.json
 
-    - name: Run script
+    - name: Jalankan bulk.py
       run: python bulk.py
 
-    - name: Upload report
+    - name: Upload tokens_report.csv hasil run
       uses: actions/upload-artifact@v3
       with:
         name: gsc-report
