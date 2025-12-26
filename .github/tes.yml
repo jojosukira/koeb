@@ -1,0 +1,11 @@
+name: Test Run
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo "Workflow berhasil terbaca"
