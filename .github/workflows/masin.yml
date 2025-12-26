@@ -1,0 +1,25 @@
+name: Run GSC Bulk
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - run: pip install google-api-python-client google-auth google-auth-oauthlib requests
+
+    - name: Generate credentials files
+      run: |
+        echo "${{ secrets.CLIENT_SECRET_JSON }}" > client_secret.json
+        echo "${{ secrets.TOKEN_B64 }}" | base64 -d > token.json
+
+    - name: Run bulk verification
+      run: python bulk.py
